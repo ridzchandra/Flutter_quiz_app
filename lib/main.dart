@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 
+import 'package:quizz_app/question.dart';
+
 void main() {
-  runApp(QuizApp());
+  runApp(QuizzApp());
 }
 
-class QuizApp extends StatefulWidget {
+class QuizzApp extends StatefulWidget {
   @override
-  _QuizAppState createState() => _QuizAppState();
+  _QuizzAppState createState() => _QuizzAppState();
 }
 
-class _QuizAppState extends State<QuizApp> {
-  var questionIndex = 0;
+class _QuizzAppState extends State<QuizzApp> {
+  var _questionIndex = 0;
 
-  var questions = [
-    "What's your favourite color?",
-    "What's your favourite animal?",
+  var _questions = [
+    "What's your favorite color?",
+    "What's your favorite animal?"
   ];
 
-  void onAnswer() {
+  void _answerQuestion() {
     setState(() {
-      questionIndex = questionIndex + 1;
+      _questionIndex = _questionIndex + 1;
     });
   }
 
@@ -27,18 +29,25 @@ class _QuizAppState extends State<QuizApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Quiz App"),
+          title: Text("Quizz App"),
         ),
         body: Column(
           children: [
-            Text(questions[questionIndex]),
-            Row(
-              children: [
-                RaisedButton(child: Text("Answer 1"), onPressed: onAnswer),
-                RaisedButton(child: Text("Answer 2"), onPressed: onAnswer),
-                RaisedButton(child: Text("Answer 3"), onPressed: onAnswer),
-              ],
-            )
+            Question(
+              _questions[_questionIndex],
+            ),
+            RaisedButton(
+              child: Text("Answer 1"),
+              onPressed: _answerQuestion,
+            ),
+            RaisedButton(
+              child: Text("Answer 2"),
+              onPressed: _answerQuestion,
+            ),
+            RaisedButton(
+              child: Text("Answer 3"),
+              onPressed: _answerQuestion,
+            ),
           ],
         ),
       ),
