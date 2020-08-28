@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quizz_app/answer.dart';
+import 'package:quizz_app/questions.dart';
 
-import 'package:quizz_app/question.dart';
+import 'package:quizz_app/quiz.dart';
+import 'package:quizz_app/result.dart';
 
 void main() {
   runApp(QuizzApp());
@@ -13,25 +14,20 @@ class QuizzApp extends StatefulWidget {
 }
 
 class _QuizzAppState extends State<QuizzApp> {
-  static const _questions = [
-    {
-      "question": "What's your favorite color?",
-      "answers": ["blue", "black", "brown", "white"],
-    },
-    {
-      "question": "What's your favorite animal?",
-      "answers": ["tiger", "rat", "ox"],
-    },
-    {
-      "question": "What's your favorite country?",
-      "answers": ["U.S.A", "P.R.C"],
-    },
-  ];
-
+  static const _questions = Questions.questionsList;
   var _questionIndex = 0;
-  void _onAnswer() {
+  var _totalScore = 0;
+  _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
+
+  void _onAnswer(_score) {
     setState(() {
       _questionIndex = _questionIndex + 1;
+      _totalScore += _score;
     });
   }
 
@@ -42,14 +38,9 @@ class _QuizzAppState extends State<QuizzApp> {
         appBar: AppBar(
           title: Text("Quizz App"),
         ),
-        body: Column(
-          children: [
-            Question(_questions[_questionIndex]["question"]),
-            ...(_questions[_questionIndex]["answers"] as List<String>)
-                .map((answer) => Answer(answer, _onAnswer))
-                .toList(),
-          ],
-        ),
+        body: (_questionIndex < _questions.length)
+            ? Quizz(_questions, _questionIndex, _onAnswer)
+            : Result(_totalScore, _resetQuiz),
       ),
     );
   }
